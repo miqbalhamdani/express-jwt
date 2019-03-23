@@ -5,10 +5,7 @@ const logger = require('morgan');
 const app = express();
 
 const user = require('./routes/user');
-const { userValidate } = require('./middleware/validation');
-
-// jwt secret token
-app.set('secretKey', 'nodeRestApi');
+const { authentication } = require('./middlewares/auth');
 
 // tell express to use body parser and logger
 app.use(bodyParser.urlencoded({extended: false}));
@@ -22,7 +19,7 @@ app.get('/', function(req, res){
 app.use('/user', user);
 
 // private route
-app.get('/home', userValidate, function(req, res){
+app.get('/home', authentication, function(req, res){
   res.json("Welcome Home!");
 });
 

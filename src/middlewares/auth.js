@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
+const { secretKey } = require('../config/config.js');
 
-const userValidate = async (req, res, next) => {
+const authentication = async (req, res, next) => {
   try {
     const token = req.headers['x-access-token'];
-    const secret = req.app.get('secretKey');
 
-    jwt.verify(token, secret, function(err, decoded) {
+    jwt.verify(token, secretKey, function(err, decoded) {
       if (err) {
         res.status(400).json(err);
       }else{
@@ -20,5 +20,5 @@ const userValidate = async (req, res, next) => {
 };
 
 module.exports = {
-  userValidate,
+  authentication,
 };

@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const salt = 10;
 
 const { User } = require('../models');
+const { salt, expires, secretKey } = require('../config/config.js');
 
 const create = async (req, res) => {
   try {
@@ -32,8 +32,8 @@ const authenticate = async (req, res) => {
     if(bcrypt.compareSync(password, user.password)) {
       const token = jwt.sign(
         {id: user.id, name: user.name, email: user.email},
-        req.app.get('secretKey'),
-        { expiresIn: '1h' }
+        secretKey,
+        { expiresIn: expires }
       );
 
       res.status(200).json({user: user, token:token});
